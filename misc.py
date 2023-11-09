@@ -12,7 +12,7 @@ def read_csv_iterator(file_path: str) -> Iterator[Dict[str, str]]:
 def create_and_populate_database(data_iterator: Iterator[Dict[str, str]], database_path: str="users.db") -> None:
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
-    create_table_query = f'CREATE TABLE IF NOT EXISTS users (category TEXT, firstname TEXT, lastname TEXT, email TEXT, gender TEXT, dob TEXT);'
+    create_table_query = f'CREATE TABLE IF NOT EXISTS users (category TEXT, firstname TEXT, lastname TEXT, email TEXT, gender TEXT, dob DATETIME);'
     cursor.execute(create_table_query)
     for row in data_iterator:
         insert_query = f'INSERT INTO users (category, firstname, lastname, email, gender, dob) VALUES (:category, :firstname, :lastname, :email, :gender, :birthDate);'
@@ -36,17 +36,17 @@ def get_filtered_data(per_page: int, page: int, filters: Optional[Dict[str, str]
             query += " AND dob = ?"
             params.append(filters['dob'])
         if 'min_age' in filters and 'max_age' in filters:
-            query += " AND strftime('%Y', 'now') - strftime('%Y', dob) BETWEEN ? AND ?"
-            params.extend([filters['min_age'], filters['max_age']])
+            query += " AND DATE('now') BETWEEN DATE(dob, '+{0} years') AND DATE(dob, '+{1} years')".format(filters['min_age'], filters['max_age'])
         elif 'min_age' in filters:
-            query += " AND strftime('%Y', 'now') - strftime('%Y', dob) >= ?"
-            params.append(filters['min_age'])
+            query += " AND DATE('now') >= DATE(dob, '+{0} years')".format(filters['min_age'])
         elif 'max_age' in filters:
-            query += " AND strftime('%Y', 'now') - strftime('%Y', dob) <= ?"
-            params.append(filters['max_age'])
+            query += " AND DATE('now') <= DATE(dob, '+{0} years')".format(filters['max_age'])
+
 
     query += " LIMIT ? OFFSET ?"
+    print(query)
     params.extend([per_page, (page - 1) * per_page])
+    print(params)
 
     with sqlite3.connect("users.db") as conn:
         conn.row_factory = sqlite3.Row

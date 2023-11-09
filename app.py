@@ -1,8 +1,13 @@
 from flask import Flask, render_template, request
+from flask_uploads import UploadSet, configure_uploads, DATA
 import misc
 import os
 
 app = Flask(__name__)
+
+app.config['UPLOADED_CSV_DEST'] = 'uploads/csv'
+csv_files = UploadSet('csv', DATA)
+configure_uploads(app, (csv_files,))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
