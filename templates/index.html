@@ -72,6 +72,7 @@
                 </tr>
             </thead>
             <tbody>
+                {% if data %}
                 {% for item in data %}
                     <tr>
                         <td>{{ item.category }}</td>
@@ -79,12 +80,14 @@
                         <td>{{ item.lastname }}</td>
                         <td>{{ item.email }}</td>
                         <td>{{ item.gender }}</td>
-                        <td>{{ item.birthDate }}</td>
+                        <td>{{ item.dob }}</td>
                     </tr>
                 {% endfor %}
+                {% endif %}
             </tbody>
         </table>
         <ul class="pagination">
+            {% if data %}
             {% if page > 1 %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page - 1 }}">Previous</a>
@@ -94,6 +97,7 @@
                 <li class="page-item">
                     <a class="page-link" href="?page={{ page + 1 }}">Next</a>
                 </li>
+            {% endif %}
             {% endif %}
         </ul>
     </div>
