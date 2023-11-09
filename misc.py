@@ -20,16 +20,12 @@ def create_and_populate_database(data_iterator: Iterator[Dict[str, str]], databa
     conn.commit()
     conn.close()
 
-def get_filtered_data(per_page: int, page: int, filters: Optional[Dict[str, str]] = None) -> List[Dict[str, str]]:
-    conn = sqlite3.connect("users.db")
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
 
+def get_filtered_data(per_page: int, page: int, filters: Optional[Dict[str, str]] = None) -> List[Dict[str, str]]:
     query = "SELECT * FROM users WHERE 1"
     params = []
 
     if filters:
-        print("qqq")
         if 'category' in filters:
             query += " AND category = ?"
             params.append(filters['category'])
@@ -51,13 +47,12 @@ def get_filtered_data(per_page: int, page: int, filters: Optional[Dict[str, str]
 
     query += " LIMIT ? OFFSET ?"
     params.extend([per_page, (page - 1) * per_page])
-    
-    cursor.execute(query, params)
 
-    data = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
+    with sqlite3.connect("users.db") as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(query, params)
+        data = cursor.fetchall()
     return data
 
 

@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     page = request.args.get('page', 1, type=int)
-    per_page = 10
+    per_page = 100
     filters = None
 
     if request.method == 'POST' and 'csv' in request.files:
@@ -18,7 +18,6 @@ def index():
     if request.method == 'GET':
         filter_params = ['category', 'gender', 'dob', 'min_age', 'max_age']
         filters = {param: value for param, value in request.args.items() if value}
-    print(filters)
     data = misc.get_filtered_data(per_page, page, filters)
     return render_template('index.html', data=data, page=page, per_page=per_page)
 
