@@ -7,6 +7,7 @@ This is a test project that demonstrates the development of a service for workin
 - [Getting Started](#getting-started)
   - [Running the Project with Docker](#running-the-project-with-docker)
 - [Usage](#usage)
+- [TODO](#TODO)
 
 ## Project Requirements
 
@@ -58,3 +59,10 @@ Once the container is running, you can access the project at http://localhost:50
 ## Usage
 
 After running the project, you can access it through a web browser. The web interface provides options to upload a CSV file, filter data based on category, gender, Date of Birth, age, and age range, and export data in CSV format. You can interact with the service to explore and filter the dataset as needed.
+
+## TODO
+
+- Write comprehensive tests for the web application to ensure it functions correctly.
+- Create unit tests for miscellaneous functions to validate their behavior.
+- Enhance the category filtering functionality to provide a better user experience.
+- Improve the appearance and styling of the web application by upgrading the CSS.
