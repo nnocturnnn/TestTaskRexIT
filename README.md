@@ -40,8 +40,8 @@ To get started with the project, follow the instructions below.
 
 1. Clone this GitLab repository:
    ```bash
-   git clone <repository_url>
-   cd <repository_directory>
+   git clone https://github.com/nnocturnnn/TestTaskRexIT.git
+   cd TestTaskRexIT
    ```
 2. Build the Docker Image:
     ```

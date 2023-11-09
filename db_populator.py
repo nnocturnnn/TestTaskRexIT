@@ -20,6 +20,17 @@ def create_and_populate_database(data_iterator: Iterator[Dict[str, str]], databa
     conn.commit()
     conn.close()
 
+def get_data(per_page, page):
+    conn = sqlite3.connect("users.db")
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(f'SELECT * FROM users LIMIT ? OFFSET ?', (per_page, (page - 1) * per_page))
+    data = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return data
+
 
 if __name__ == '__main__':
     data_iterator = read_csv_iterator(sys.argv[1])
